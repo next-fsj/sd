@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="date.js"></script>
+	<style>
+
+	 @font-face {
+     font-family: text;
+     src: local(myriad-set-pro_text), url("../fonts/myriad-set-pro_text.woff") format("woff"), url("../fonts/myriad-set-pro_text.eot") format("eot"), url("../fonts/myriad-set-pro_text.ttf") format("ttf"), url("../fonts/myriad-set-pro_text.svg") format("svg");
+       }
+	body{
+		font-size: 20px;
+		font-family: text;
+	}
+	.one{
+		width: 800px;
+		height: 500px;
+		background: #ccc;
+		margin: 10px auto;
+
+        position:relative;
+        overflow: hidden;
+	}
+	.tree{
+		width: 100px;
+		height: 40px;
+		border:2px solid red;
+		position: absolute;
+	     right:20px;
+	     bottom:40px;
+        color:red;
+        text-align:center;
+        line-height: 40px;
+	}
+	.zi{
+		display: inline-block;
+		width:50px;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		color:purple;
+		position: absolute;
+		font-weight: 400;
+		border-radius: 20px;
+		font-size: 20px;
+		background: url(./image/未标题-1.png) 0 -5px;
+	}
+  	.ting{
+  	  width: 80px;
+  	  height: 35px;
+  	  text-align: center;
+  	  line-height: 35px;
+  	  border: 1px solid red;
+  	
+      font-size:16px;
+      color:#000;
+      cursor:pointer;
+      position: absolute;
+      left: 10px;
+      bottom: 100px;
+  	}
+  	.ting1{
+  	  width: 80px;
+  	  height: 35px;
+  	  text-align: center;
+  	  line-height: 35px;
+  	  border: 1px solid blue;
+  	  
+      font-size:16px;
+      color:red;
+      cursor:pointer;
+      position: absolute;
+      left: 10px;
+      bottom: 100px;
+  	}
+  	.cxks{
+  		width: 80px;
+  	  height: 35px;
+  	  text-align: center;
+  	  line-height: 35px;
+  	  border: 1px solid red;
+  	
+      font-size:16px;
+      color:#000;
+      cursor:pointer;
+      position: absolute;
+      left: 10px;
+      bottom: 60px;
+  	}
+	</style>
+</head>
+<body>
+	<div class="one">
+	 <img src="./image/3853450_084152640133_2.jpg">
+	 <div class="tree">苹果数量:0</div>
+	 <div class="ting">暂停</div>>
+	 <div class="cxks">重新开始</div>
+	</div>
+</body>
+
+	<script type="text/javascript">
+      var zt=document.getElementsByClassName('ting')[0];
+       var cxks=document.querySelector('.cxks');
+        console.log(cxks)
+       var tree=document.querySelector(".tree");
+         
+     var  ones=document.querySelector(".one");
+	   var zimujihe={};
+	   var shuliang=10;
+	   var createzimu=function(){
+	   	do{
+	   	var zimu=String.fromCharCode(Math.floor(Math.random()*26+97));
+	   }while(zimujihe[zimu])//除去重复
+	   	var r=Math.floor(Math.random()*255);
+	   	var g=Math.floor(Math.random()*255);
+	   	var b=Math.floor(Math.random()*255);
+	   	var cj=document.createElement("div");
+
+	   	    cj.classList.add('zi');
+	   	    cj.innerHTML=zimu;
+	   	    ones.appendChild(cj);
+	   	    cj.style.left=Math.random()*(ones.offsetWidth-cj.offsetWidth)+"px";
+	   	    // cj.style.backgroundColor='rgb('+r+','+g+','+b+')';
+	   	    var fan=Math.ceil(Math.random()*5);
+	   	    zimujihe[zimu]={top:0,yuansu:cj,off:fan}
+	   	     
+	   }
+	   for (var i = 0; i <shuliang; i++) {
+	  
+	   createzimu();
+			   	
+	   };
+	    var remove=function(key){
+	    	
+	    		var el=zimujihe[key].yuansu;
+	    		el.parentElement.removeChild(el);
+	    		delete zimujihe[key];
+	    		console.log(zimujihe)
+	    	
+	    }
+	    var num1=[];
+	  
+
+        var HW=ones.offsetHeight;
+	    var diao=function(){
+            var index=[];
+	    	for (var i in zimujihe){
+	    		var el=zimujihe[i];
+	    	    var ss=el.yuansu;
+                 el.top+=el.off;
+                 ss.style.top=el.top+"px";
+                   if (el.top>HW){
+                   	index.push(i);
+                   	num1.push(i);
+                   }
+	    	} var j;
+	    	
+	         if(index.length) {
+	         	for (var i = 0; i <index.length; i++) {
+	         	   remove(index[i])
+	        	   createzimu()
+                    j+=1
+                    
+	         	}
+	        	
+
+	            
+               
+	       }
+          
+	    }
+	     
+	       var t=setInterval(diao,20);
+           var anniu=function(){
+	            if (t) {
+	            	clearInterval(t)
+	                t=null;
+	            }else{
+	            	t=setInterval(diao,20);
+	            }
+            }
+        
+
+         document.onkeyup=function(e){
+	    	 if(e.keyCode =="32"){
+	    	 	anniu();
+	    	 	return;
+	    	 }else{
+
+	    	 var key=String.fromCharCode(e.keyCode).toLowerCase();
+	    	 if (zimujihe[key]) {
+	    	 	var j
+	    	 	remove(key);
+	    	 	createzimu();
+	    	 	};
+	    	 }
+	    }
+	    zt.onclick=function(e){
+	  	 anniu();
+	  	  if(!t){
+	    zt.innerHTML="开始";
+	  	zt.classList.add("ting1")
+       }else{
+       	zt.innerHTML="暂停";
+       	zt.classList.remove("ting1")
+        zt.classList.add("ting");
+       }
+	  }
+       cxks.onclick=function(){
+        for (var i in zimujihe){
+	    		
+	    	remove(i);
+
+
+       }
+        for (var i = 0; i <shuliang; i++) {
+	  
+	   createzimu();
+			   	
+	   };
+	
+   }
+     tree.innerHTML='苹果数量:'+num1.length+''
+	</script>
+</html>
